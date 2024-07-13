@@ -4,6 +4,7 @@ import AuthUserPresenter from "../modules/auth_user/app/auth_user_presenter";
 import GetUserByIdPresenter from "../modules/get_user_by_id/app/get_user_by_id_presenter";
 import createEmailPresenter from "../modules/create_email/app/create_email_presenter";
 import getAllEmailsPresenter from "../modules/get_all_emails/app/get_all_emails_presenter";
+import getAllEmailsByTeamPresenter from "../modules/get_all_emails_by_team/app/get_all_emails_by_team_presenter";
 
 import app from "../app";
 
@@ -22,6 +23,7 @@ const routes = (app: Express) => {
   // email routes
   app.use("/api", createEmailPresenter);
   app.use("/api", getAllEmailsPresenter);
+  app.use("/api", getAllEmailsByTeamPresenter);
 };
 
 export default routes;
