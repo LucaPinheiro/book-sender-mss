@@ -40,7 +40,7 @@ export class CreateEmailController {
       }
 
       if (errors.length > 0) {
-        return res.status(400).json(errors);
+        throw res.status(400).json(errors);
       }
 
       const userProps: EmailProps = {
@@ -70,6 +70,9 @@ export class CreateEmailController {
       }
       if (error instanceof DuplicatedItem) {
         return new Conflict(error.message).send(res);
+      }
+      if (error instanceof BadRequest) {
+        return new BadRequest(error.getMessage()).send(res);
       }
       return new InternalServerError("Internal Server Error").send(res);
     }
