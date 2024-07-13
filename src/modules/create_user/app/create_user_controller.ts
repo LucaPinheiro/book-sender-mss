@@ -8,7 +8,12 @@ import {
 } from "../../../shared/helpers/errors/controller_errors";
 import { CreateUserViewModel } from "./create_user_viewmodel";
 import { EntityError } from "../../../shared/helpers/errors/domain_errors";
-import { BadRequest, Forbidden, InternalServerError, ParameterError } from "../../../shared/helpers/http/http_codes";
+import {
+  BadRequest,
+  Forbidden,
+  InternalServerError,
+  ParameterError,
+} from "../../../shared/helpers/http/http_codes";
 
 export class CreateUserController {
   constructor(private createUserUsecase: CreateUserUsecase) {}
@@ -32,10 +37,6 @@ export class CreateUserController {
         errors.push(new MissingParameters("Password"));
       }
 
-      if (!status) {
-        errors.push(new MissingParameters("Status"));
-      }
-
       if (errors.length > 0) {
         return res.status(400).json(errors);
       }
@@ -44,8 +45,8 @@ export class CreateUserController {
         name,
         email,
         password,
-        status,
       };
+      
       await this.createUserUsecase.execute(userProps);
 
       const viewModel = new CreateUserViewModel(
@@ -65,7 +66,7 @@ export class CreateUserController {
       if (error instanceof Forbidden) {
         return new Forbidden(error.getMessage()).send(res);
       }
-      return new InternalServerError('Internal Server Error').send(res);
+      return new InternalServerError("Internal Server Error").send(res);
     }
   }
 }
