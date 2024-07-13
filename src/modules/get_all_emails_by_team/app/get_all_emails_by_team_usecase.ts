@@ -10,7 +10,7 @@ export class GetAllEmailsByTeamUsecase {
     if (!Email.isValidTeam(team as TEAM)) {
       throw new InvalidParameter("team", "Invalid team name");
     }
-    
+
     return this.repo.getAllEmailsByTeam(team);
   }
 }
