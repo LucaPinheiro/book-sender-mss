@@ -3,7 +3,7 @@ import { UserProps } from "../../../shared/domain/entities/user";
 import { IUserRepository } from "../../../shared/domain/repositories/user_repository_interface";
 import { User } from "../../domain/entities/user";
 import bcrypt from "bcrypt";
-import { STATUS } from "../../domain/enums/status_enum";
+import { InvalidCredentialsError } from "../../helpers/errors/login_errors";
 
 const prisma = new PrismaClient();
 
@@ -29,7 +29,6 @@ export class UserRepositoryPrisma implements IUserRepository {
           name: userProps.name,
           email: userProps.email,
           password: hashedPassword,
-          status: userProps.status as string,
         },
       });
 
@@ -37,7 +36,6 @@ export class UserRepositoryPrisma implements IUserRepository {
         name: createdUserFromPrisma.name,
         email: createdUserFromPrisma.email,
         password: createdUserFromPrisma.password,
-        status: createdUserFromPrisma.status as STATUS,
       });
 
       return createdUser;
@@ -59,7 +57,7 @@ export class UserRepositoryPrisma implements IUserRepository {
       });
 
       if (!existingUser) {
-        return undefined; 
+        return undefined;
       }
 
       return new User({
@@ -67,7 +65,6 @@ export class UserRepositoryPrisma implements IUserRepository {
         name: existingUser.name,
         email: existingUser.email,
         password: existingUser.password,
-        status: existingUser.status as STATUS,
       });
     } catch (error) {
       console.error("Erro ao buscar usuário por email:", error);
@@ -84,7 +81,7 @@ export class UserRepositoryPrisma implements IUserRepository {
       });
 
       if (!existingUser) {
-        return undefined; 
+        return undefined;
       }
 
       return new User({
@@ -92,11 +89,46 @@ export class UserRepositoryPrisma implements IUserRepository {
         name: existingUser.name,
         email: existingUser.email,
         password: existingUser.password,
-        status: existingUser.status as STATUS,
       });
     } catch (error) {
       console.error("Erro ao buscar usuário por id:", error);
       throw new Error("Erro ao buscar usuário por id");
+    }
+  }
+
+  async sessionUser(
+    email: string,
+    password: string
+  ): Promise<User | undefined> {
+    try {
+      const existingUser = await prisma.user.findUnique({
+        where: {
+          email: email,
+        },
+      });
+
+      if (!existingUser) {
+        return undefined;
+      }
+
+      const isPasswordCorrect = await bcrypt.compare(
+        password,
+        existingUser.password
+      );
+
+      if (!isPasswordCorrect) {
+        return undefined;
+      }
+
+      return new User({
+        id: existingUser.user_id,
+        name: existingUser.name,
+        email: existingUser.email,
+        password: existingUser.password,
+      });
+    } catch (error) {
+      console.error("Erro ao buscar usuário por email e senha:", error);
+      throw new InvalidCredentialsError();
     }
   }
 }
