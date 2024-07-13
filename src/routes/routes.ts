@@ -7,7 +7,7 @@ import app from "../app";
 const routes = (app: Express) => {
   app
     .route("/")
-    .get((req: Request, res: Response) => res.status(200).send("Api Portal Interno Dev Dynasty"));
+    .get((req: Request, res: Response) => res.status(200).send("Api Book Sender"));
 
   
   // user routes
