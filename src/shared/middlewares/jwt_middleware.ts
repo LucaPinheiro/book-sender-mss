@@ -49,6 +49,6 @@ export function authenticateToken(
     if (error instanceof EntityError) {
       return res.sendStatus(403);
     }
-    return res.sendStatus(500);
+    return res.status(401).json({ error: "Unauthorized" });
   }
 }
