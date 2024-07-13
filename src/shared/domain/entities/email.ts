@@ -36,13 +36,20 @@ export class Email {
     return this.props.email;
   }
 
+  get team(): TEAM {
+    return this.props.team;
+  }
+
+  get role(): ROLE {
+    return this.props.role;
+  }
+
   setEmail(email: string): void {
     if (!Email.isValidEmail(email)) {
       throw new EntityError("Invalid email");
     }
     this.props.email = email;
   }
-
 
   static isValidTeam(team: TEAM): boolean {
     if (team == null) {
