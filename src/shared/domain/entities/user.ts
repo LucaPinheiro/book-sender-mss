@@ -1,12 +1,10 @@
 import { EntityError } from "../../helpers/errors/domain_errors";
-import { STATUS } from "../enums/status_enum";
 
 export interface UserProps {
   id?: string;
   name: string;
   email: string;
   password: string;
-  status: STATUS;
 }
 
 export class User {
@@ -44,9 +42,6 @@ export class User {
     return this.props.password;
   }
 
-  get status(): STATUS {
-    return this.props.status;
-  }
 
   setName(name: string): void {
     if (!User.isValidName(name)) {
@@ -69,12 +64,6 @@ export class User {
     this.props.password = password;
   }
 
-  setStatus(status: STATUS): void {
-    if (!User.validatestatus(status)) {
-      throw new EntityError("Invalid status");
-    }
-    this.props.status = status;
-  }
 
   static isValidName(name: string): boolean {
     name = name.trim();
@@ -82,21 +71,11 @@ export class User {
   }
 
   static isValidEmail(email: string): boolean {
-    const emailRegex = /\S+@\S+\.\S+/;
+    const emailRegex = /\S+@santander\S+\.\S+/;
     return emailRegex.test(email);
   }
 
   static isValidPassword(password: string): boolean {
     return typeof password === "string" && password.length >= 8;
-  }
-
-  static validatestatus(status: STATUS): boolean {
-    if (status == null) {
-      return false;
-    }
-    if (Object.values(STATUS).includes(status) == false) {
-      return false;
-    }
-    return true;
   }
 }
