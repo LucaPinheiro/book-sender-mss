@@ -1,5 +1,5 @@
-import { Email } from "../entities/email";
+import { Email, EmailProps } from "../entities/email";
 
-export interface IEmailRepositoryInterface {
-  create_email(email: string, team: string, role: string): Promise<Email>;
+export interface IEmailRepository {
+  createEmail(emailProps: EmailProps): Promise<Email>;
 }
