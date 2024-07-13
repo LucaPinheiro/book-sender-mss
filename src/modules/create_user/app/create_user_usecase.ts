@@ -15,9 +15,6 @@ export class CreateUserUsecase {
     if (!userProps.password) {
       throw new EntityError("Missing password");
     }
-    if (!userProps.status) {
-      throw new EntityError("Missing status");
-    }
 
     const newUser = await this.repo.createUser(new User(userProps));
     return newUser;
