@@ -43,8 +43,15 @@ export class Email {
     this.props.email = email;
   }
 
+
   static isValidTeam(team: TEAM): boolean {
-    return Object.values(TEAM).includes(team);
+    if (team == null) {
+      return false;
+    }
+    if (Object.values(TEAM).includes(team) == false) {
+      return false;
+    }
+    return true;
   }
 
   static isValidEmail(email: string): boolean {
@@ -53,6 +60,12 @@ export class Email {
   }
 
   static isValidRole(role: ROLE): boolean {
-    return Object.values(ROLE).includes(role);
+    if (role == null) {
+      return false;
+    }
+    if (Object.values(ROLE).includes(role) == false) {
+      return false;
+    }
+    return true;
   }
 }
