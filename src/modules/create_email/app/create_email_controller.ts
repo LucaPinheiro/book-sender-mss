@@ -18,7 +18,7 @@ import { CreateEmailViewModel } from "./create_email_viewmodel";
 import { DuplicatedItem } from "../../../shared/helpers/errors/usecase_errors";
 
 export class CreateEmailController {
-  constructor(private createUserUsecase: CreateEmailUsecase) {}
+  constructor(private createEmailUsecase: CreateEmailUsecase) {}
 
   async createEmail(req: Request, res: Response) {
     try {
@@ -35,7 +35,7 @@ export class CreateEmailController {
         errors.push(new MissingParameters("Team"));
       }
 
-      if (!team) {
+      if (!role) {
         errors.push(new MissingParameters("Role"));
       }
 
@@ -49,7 +49,7 @@ export class CreateEmailController {
         role,
       };
 
-      await this.createUserUsecase.execute(userProps);
+      await this.createEmailUsecase.execute(userProps);
 
       const viewModel = new CreateEmailViewModel(
         "Email cadastrado com sucesso!"
