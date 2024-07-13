@@ -48,7 +48,7 @@ export class Email {
   }
 
   static isValidEmail(email: string): boolean {
-    const emailRegex = /\S+@santander\S+\.\S+/;
+    const emailRegex = /\S+@\S+\.\S+/;
     return emailRegex.test(email);
   }
 
