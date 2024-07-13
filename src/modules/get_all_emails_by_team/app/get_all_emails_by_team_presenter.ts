@@ -1,20 +1,20 @@
 import express, { Request, Response } from "express";
 import { EmailRepositoryPrisma } from "../../../shared/infra/repositories/email_repository_prisma";
-import { GetAllEmailsUsecase } from "./get_all_emails_by_team_usecase";
-import { GetAllEmailsController } from "./get_all_emails_by_team_controller";
+import { GetAllEmailsByTeamUsecase } from "./get_all_emails_by_team_usecase";
+import { GetAllEmailsByTeamController } from "./get_all_emails_by_team_controller";
 import { authenticateToken } from "../../../shared/middlewares/jwt_middleware";
 
 const router = express.Router();
 
 const userRepository = new EmailRepositoryPrisma();
-const getAllEmailsUsecase = new GetAllEmailsUsecase(userRepository);
-const getAllEmailsController = new GetAllEmailsController(getAllEmailsUsecase);
+const getAllEmailsUsecase = new GetAllEmailsByTeamUsecase(userRepository);
+const getAllEmailsByTeamController = new GetAllEmailsByTeamController(getAllEmailsUsecase);
 
 router.get(
-  "/emails",
+  "/emails/:team",
   authenticateToken,
   async (req: Request, res: Response) => {
-    await getAllEmailsController.handle(req, res);
+    await getAllEmailsByTeamController.handle(req, res);
   }
 );
 
