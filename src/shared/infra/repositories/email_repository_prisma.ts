@@ -1,22 +1,18 @@
 import { PrismaClient } from "@prisma/client";
 import { Email, EmailProps } from "../../domain/entities/email";
-import { IEmailRepositoryInterface } from "../../domain/repositories/email_repository_interface";
+import { IEmailRepository } from "../../domain/repositories/email_repository_interface";
 import { TEAM } from "../../domain/enums/team_enum";
 import { ROLE } from "../../domain/enums/role_enum";
 import { DuplicatedItem } from "../../helpers/errors/usecase_errors";
 
 const prisma = new PrismaClient();
 
-export class EmailRepositoryPrisma implements IEmailRepositoryInterface {
-  async create_email(
-    email: string,
-    team: string,
-    role: string
-  ): Promise<Email> {
+export class EmailRepositoryPrisma implements IEmailRepository {
+  async createEmail(emailProps: EmailProps): Promise<Email> {
     try {
       const existingEmail = await prisma.email.findUnique({
         where: {
-          email: email,
+          email: emailProps.email,
         },
       });
 
@@ -25,9 +21,9 @@ export class EmailRepositoryPrisma implements IEmailRepositoryInterface {
 
       const createdEmailFromPrisma = await prisma.email.create({
         data: {
-          email: email,
-          team: team,
-          role: role,
+          email: emailProps.email,
+          team: emailProps.team,
+          role: emailProps.role,
         },
       });
 
