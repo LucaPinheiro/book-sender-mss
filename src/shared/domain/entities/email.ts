@@ -2,28 +2,28 @@ import { EntityError } from "../../helpers/errors/domain_errors";
 import { ROLE } from "../enums/role_enum";
 import { TEAM } from "../enums/team_enum";
 
-export interface UserProps {
+export interface EmailProps {
   emailId?: string;
   email: string;
   team: TEAM;
   role: ROLE;
 }
 
-export class User {
-  constructor(public props: UserProps) {
+export class Email {
+  constructor(public props: EmailProps) {
     this.validateProps(props);
   }
 
-  private validateProps(props: UserProps) {
-    if (!User.isValidEmail(props.email)) {
+  private validateProps(props: EmailProps) {
+    if (!Email.isValidEmail(props.email)) {
       throw new EntityError("Invalid email");
     }
 
-    if (!User.isValidTeam(props.team)) {
+    if (!Email.isValidTeam(props.team)) {
       throw new EntityError("Invalid team");
     }
 
-    if (!User.isValidRole(props.role)) {
+    if (!Email.isValidRole(props.role)) {
       throw new EntityError("Invalid role");
     }
   }
@@ -37,7 +37,7 @@ export class User {
   }
 
   setEmail(email: string): void {
-    if (!User.isValidEmail(email)) {
+    if (!Email.isValidEmail(email)) {
       throw new EntityError("Invalid email");
     }
     this.props.email = email;
