@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { GetAllEmailsViewmodel } from "./get_all_emails_by_team_viewmodel";
+import { GetAllEmailsByTeamViewmodel } from "./get_all_emails_by_team_viewmodel";
 import { NoItemsFound } from "../../../shared/helpers/errors/usecase_errors";
 import {
   BadRequest,
@@ -12,16 +12,24 @@ import {
   InvalidRequest,
 } from "../../../shared/helpers/errors/controller_errors";
 import { EntityError } from "../../../shared/helpers/errors/domain_errors";
-import { GetAllEmailsUsecase } from "./get_all_emails_by_team_usecase";
+import { GetAllEmailsByTeamUsecase } from "./get_all_emails_by_team_usecase";
 
-export class GetAllEmailsController {
-  constructor(private usecase: GetAllEmailsUsecase) {}
+export class GetAllEmailsByTeamController {
+  constructor(private usecase: GetAllEmailsByTeamUsecase) {}
 
   async handle(req: Request, res: Response) {
     try {
-      const emails = await this.usecase.execute();
+      const team = req.params.team as string;
+
+      if (!team) {
+        throw new InvalidParameter("Team", "Team is required");
+      }
+
+      
+
+      const emails = await this.usecase.execute(team);
       const emailsViewModel = emails.map(
-        (email) => new GetAllEmailsViewmodel(email)
+        (email) => new GetAllEmailsByTeamViewmodel(email)
       );
       res.status(200).json(emailsViewModel);
     } catch (error: any) {
