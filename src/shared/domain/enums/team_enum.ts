@@ -7,11 +7,11 @@ export enum TEAM {
 
 export function toEnum(value: string): TEAM {
   switch (value) {
-    case "MS":
+    case "MARKET-SHARE":
       return TEAM.MARKETSHARE;
-    case "SA":
+    case "SEGUROS-AUTO":
       return TEAM.SEGUROSAUTO;
-    case "CVS":
+    case "CONVERSAO":
       return TEAM.CONVERSAO;
     case "TODOS":
       return TEAM.TODOS;
