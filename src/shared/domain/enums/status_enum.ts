@@ -1,14 +1,14 @@
-export enum STATUS {
+export enum TEAM {
   ACTIVE = "ACTIVE",
   INACTIVE = "INACTIVE",
 }
 
-export function toEnum(value: string): STATUS {
+export function toEnum(value: string): TEAM {
   switch (value) {
     case "ACTIVE":
-      return STATUS.ACTIVE;
+      return TEAM.ACTIVE;
     case "INACTIVE":
-      return STATUS.INACTIVE;
+      return TEAM.INACTIVE;
     default:
       throw new Error("Invalid value");
   }
