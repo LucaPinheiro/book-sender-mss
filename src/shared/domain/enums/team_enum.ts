@@ -2,6 +2,7 @@ export enum TEAM {
   MARKETSHARE = "MS",
   SEGUROSAUTO = "SA",
   CONVERSAO = "CVS",
+  TODOS = "TODOS",
 }
 
 export function toEnum(value: string): TEAM {
@@ -12,6 +13,8 @@ export function toEnum(value: string): TEAM {
       return TEAM.SEGUROSAUTO;
     case "CVS":
       return TEAM.CONVERSAO;
+    case "TODOS":
+      return TEAM.TODOS;
     default:
       throw new Error("Invalid value");
   }
