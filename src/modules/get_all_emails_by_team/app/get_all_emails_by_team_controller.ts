@@ -25,6 +25,14 @@ export class GetAllEmailsByTeamController {
         throw new InvalidParameter("Team", "Team is required");
       }
 
+      if (team === "TODOS") {
+        const emails = await this.usecase.execute(team);
+        const emailsViewModel = emails.map(
+          (email) => new GetAllEmailsByTeamViewmodel(email)
+        );
+        res.status(200).json(emailsViewModel);
+      }
+
       const emails = await this.usecase.execute(team);
       const emailStrings = emails.map((email) => email.email);
       res.status(200).json(emailStrings);
