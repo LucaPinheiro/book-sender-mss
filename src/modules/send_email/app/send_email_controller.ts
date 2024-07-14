@@ -53,11 +53,11 @@ export class SendEmailController {
         resolvedPdfPath
       );
 
-      if (success) {
-        const uploadDir = path.resolve('uploads'); 
-        await fsPromises.rm(uploadDir, { recursive: true, force: true });
-        console.log(`Pasta ${uploadDir} removida com sucesso!`);
-      }
+      // if (success) {
+      //   const uploadDir = path.resolve('uploads'); 
+      //   await fsPromises.rm(uploadDir, { recursive: true, force: true });
+      //   console.log(`Pasta ${uploadDir} removida com sucesso!`);
+      // }
 
       const viewmodel = new SendEmailViewModel("E-mails enviados com sucesso!");
       return res.status(200).send(viewmodel);
