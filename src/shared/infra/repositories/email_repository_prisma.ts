@@ -47,7 +47,7 @@ export class EmailRepositoryPrisma implements IEmailRepository {
     try {
       const emailsFromPrisma = await prisma.email.findMany({
         orderBy: {
-          email: 'asc',
+          email: "asc",
         },
       });
 
@@ -73,7 +73,7 @@ export class EmailRepositoryPrisma implements IEmailRepository {
           team: team,
         },
         orderBy: {
-          email: 'asc',
+          email: "asc",
         },
       });
 
@@ -112,6 +112,19 @@ export class EmailRepositoryPrisma implements IEmailRepository {
     } catch (error: any) {
       console.error("Erro ao buscar emails:", error);
       throw new Error("Erro ao buscar emails no banco de dados.");
+    }
+  }
+
+  async deleteEmail(email: string): Promise<void> {
+    try {
+      await prisma.email.delete({
+        where: {
+          email: email,
+        },
+      });
+    } catch (error: any) {
+      console.error("Erro ao deletar email:", error);
+      throw new Error("Erro ao deletar email no banco de dados.");
     }
   }
 }
