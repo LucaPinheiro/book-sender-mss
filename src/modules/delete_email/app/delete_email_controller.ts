@@ -25,7 +25,7 @@ export class DeleteEmailController {
       await this.deleteEmailUsecase.execute(email);
       return res
         .status(200)
-        .json(new DeleteEmailViewModel("Email deleted successfully"));
+        .json(new DeleteEmailViewModel("E-mail deletado com sucesso!"));
     } catch (error: any) {
       if (error instanceof InvalidRequest) {
         new BadRequest(error.message).send(res);
