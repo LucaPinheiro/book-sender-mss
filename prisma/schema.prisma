@@ -18,5 +18,5 @@ model Email {
   email_id String @id @default(uuid())
   email    String @unique
   team     String
-  role    String
+  role     String
 }
