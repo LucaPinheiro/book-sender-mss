@@ -1,5 +1,7 @@
 import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
+import fs from 'fs';
+import path from 'path';
 
 dotenv.config();
 
@@ -11,13 +13,22 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-export async function sendEmails(recipients: string[], subject: string, text: string) {
+export async function sendEmails(recipients: string[], subject: string, text: string, pdfPath: string) {
+  const pdfContent = fs.readFileSync(path.resolve(__dirname, pdfPath));
+
   for (const to of recipients) {
     const mailOptions = {
       from: process.env.EMAIL_LOGIN,
       to,
       subject,
       text,
+      attachments: [
+        {
+          filename: path.basename(pdfPath),
+          content: pdfContent,
+          contentType: 'application/pdf'
+        }
+      ]
     };
 
     try {
@@ -29,5 +40,6 @@ export async function sendEmails(recipients: string[], subject: string, text: st
   }
 }
 
-const recipients = ['lucapgomes11@gmail.com', 'lucapinheirog@gmail.com'];
-sendEmails(recipients, 'Teste', 'Olá, tudo bem?');
+// const recipients = ['lucapgomes11@gmail.com', 'lucapinheirog@gmail.com'];
+// const pdfPath = '../../../../cv_LucaGomes.pdf';
+// sendEmails(recipients, 'Teste', 'Olá, tudo bem?', pdfPath);
