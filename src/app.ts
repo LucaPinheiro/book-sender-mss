@@ -1,6 +1,7 @@
 import cors from "cors";
 import express from "express";
 import dotenv from "dotenv";
+import multer from 'multer';
 import routes from "./routes/routes";
 
 dotenv.config();
