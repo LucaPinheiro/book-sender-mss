@@ -45,7 +45,11 @@ export class EmailRepositoryPrisma implements IEmailRepository {
 
   async getAllEmails(): Promise<Email[]> {
     try {
-      const emailsFromPrisma = await prisma.email.findMany();
+      const emailsFromPrisma = await prisma.email.findMany({
+        orderBy: {
+          email: 'asc',
+        },
+      });
 
       const emails = emailsFromPrisma.map((email) => {
         return new Email({
@@ -67,6 +71,9 @@ export class EmailRepositoryPrisma implements IEmailRepository {
       const emailsFromPrisma = await prisma.email.findMany({
         where: {
           team: team,
+        },
+        orderBy: {
+          email: 'asc',
         },
       });
 
