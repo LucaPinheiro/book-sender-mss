@@ -11,7 +11,7 @@ const getAllEmailsUsecase = new GetAllEmailsByTeamUsecase(userRepository);
 const getAllEmailsByTeamController = new GetAllEmailsByTeamController(getAllEmailsUsecase);
 
 router.get(
-  "/emails/:team",
+  "/emails/team/:team",
   authenticateToken,
   async (req: Request, res: Response) => {
     await getAllEmailsByTeamController.handle(req, res);
