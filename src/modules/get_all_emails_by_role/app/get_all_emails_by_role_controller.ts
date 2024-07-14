@@ -12,7 +12,6 @@ import {
 } from "../../../shared/helpers/errors/controller_errors";
 import { EntityError } from "../../../shared/helpers/errors/domain_errors";
 import { GetAllEmailsByRoleUsecase } from "./get_all_emails_by_role_usecase";
-import { GetAllEmailsByRoleViewmodel } from "./get_all_emails_by_role_viewmodel";
 
 export class GetAllEmailsByRoleController {
   constructor(private usecase: GetAllEmailsByRoleUsecase) {}
@@ -26,10 +25,8 @@ export class GetAllEmailsByRoleController {
       }
 
       const emails = await this.usecase.execute(role);
-      const emailsViewModel = emails.map(
-        (email) => new GetAllEmailsByRoleViewmodel(email)
-      );
-      res.status(200).json(emailsViewModel);
+      const emailStrings = emails.map((email) => email.email);
+      res.status(200).json(emailStrings);
     } catch (error: any) {
       if (error instanceof InvalidRequest) {
         return new BadRequest(error.message).send(res);
