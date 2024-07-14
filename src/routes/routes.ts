@@ -7,6 +7,7 @@ import getAllEmailsPresenter from "../modules/get_all_emails/app/get_all_emails_
 import getAllEmailsByTeamPresenter from "../modules/get_all_emails_by_team/app/get_all_emails_by_team_presenter";
 import getAllEmailsByRolePresenter from "../modules/get_all_emails_by_role/app/get_all_emails_by_role_presenter";
 import sendEmailPresenter from "../modules/send_email/app/send_email_presenter";
+import deleteEmailPresenter from "../modules/delete_email/app/delete_email_presenter";
 
 import app from "../app";
 
@@ -28,6 +29,7 @@ const routes = (app: Express) => {
   app.use("/api", getAllEmailsByTeamPresenter);
   app.use("/api", getAllEmailsByRolePresenter);
   app.use("/api", sendEmailPresenter);
+  app.use("/api", deleteEmailPresenter);
 };
 
 export default routes;
