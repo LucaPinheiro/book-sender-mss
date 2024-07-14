@@ -2,13 +2,12 @@ import express, { Request, Response } from "express";
 import multer from "multer";
 import { SendEmailController } from "./send_email_controller";
 import { SendEmailUsecase } from "./send_email_usecase";
-import { UserRepositoryPrisma } from "../../../shared/infra/repositories/user_repository_prisma";
 
 const upload = multer({ dest: "uploads/" });
 
 const router = express.Router();
-const createUserUsecase = new SendEmailUsecase();
-const sendEmailController = new SendEmailController(createUserUsecase);
+const sendEmailUsecase = new SendEmailUsecase();
+const sendEmailController = new SendEmailController(sendEmailUsecase);
 
 router.post(
   "/send-email",
