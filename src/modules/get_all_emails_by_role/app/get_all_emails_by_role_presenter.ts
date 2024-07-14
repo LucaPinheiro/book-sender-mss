@@ -11,7 +11,7 @@ const getAllEmailsByRoleUsecase = new GetAllEmailsByRoleUsecase(emailRepository)
 const getAllEmailsByRoleController = new GetAllEmailsByRoleController(getAllEmailsByRoleUsecase);
 
 router.get(
-  "/emails/:role",
+  "/emails/role/:role",
   authenticateToken,
   async (req: Request, res: Response) => {
     await getAllEmailsByRoleController.handle(req, res);
