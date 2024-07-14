@@ -15,6 +15,8 @@ import { EntityError } from "../../../shared/helpers/errors/domain_errors";
 import { DuplicatedItem } from "../../../shared/helpers/errors/usecase_errors";
 import { SendEmailViewModel } from "./send_email_viewmodel";
 import path from "path";
+import fs from "fs";
+import fsPromises from "fs/promises"; 
 
 export class SendEmailController {
   constructor(private usecase: SendEmailUsecase) {}
@@ -38,12 +40,10 @@ export class SendEmailController {
         throw new InvalidRequest("Text is required.");
       }
 
-      // Ensure recipients is an array
       if (!Array.isArray(recipients)) {
         recipients = [recipients];
       }
 
-      // Resolve the absolute path
       const resolvedPdfPath = path.resolve(pdfPath);
 
       const success = await this.usecase.execute(
@@ -52,6 +52,13 @@ export class SendEmailController {
         text,
         resolvedPdfPath
       );
+
+      if (success) {
+        const uploadDir = path.resolve('uploads'); 
+        await fsPromises.rm(uploadDir, { recursive: true, force: true });
+        console.log(`Pasta ${uploadDir} removida com sucesso!`);
+      }
+
       const viewmodel = new SendEmailViewModel("E-mails enviados com sucesso!");
       return res.status(200).send(viewmodel);
     } catch (error: any) {
@@ -71,7 +78,7 @@ export class SendEmailController {
         return new Conflict(error.message).send(res);
       }
       if (error instanceof BadRequest) {
-        return new BadRequest(error.getMessage()). send(res);
+        return new BadRequest(error.getMessage()).send(res);
       }
       return new InternalServerError("Internal Server Error").send(res);
     }
