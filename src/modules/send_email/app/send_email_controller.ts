@@ -24,14 +24,14 @@ export class SendEmailController {
   async handle(req: Request, res: Response) {
     try {
       const { subject, text } = req.body;
-      let { recipients } = req.body;
+      let { team } = req.body;
       const pdfPath = req.file?.path;
 
       if (!pdfPath) {
         throw new InvalidRequest("PDF file is required.");
       }
-      if (!recipients) {
-        throw new InvalidRequest("Recipients are required.");
+      if (!team) {
+        throw new InvalidRequest("Team are required.");
       }
       if (!subject) {
         throw new InvalidRequest("Subject is required.");
@@ -40,14 +40,14 @@ export class SendEmailController {
         throw new InvalidRequest("Text is required.");
       }
 
-      if (!Array.isArray(recipients)) {
-        recipients = [recipients];
-      }
+      // if (!Array.isArray(recipients)) {
+      //   recipients = [recipients];
+      // }
 
       const resolvedPdfPath = path.resolve(pdfPath);
-
+      
       const success = await this.usecase.execute(
-        recipients,
+        team,
         subject,
         text,
         resolvedPdfPath
