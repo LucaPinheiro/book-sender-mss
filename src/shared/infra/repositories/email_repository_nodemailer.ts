@@ -14,7 +14,7 @@ const transporter = nodemailer.createTransport({
 });
 
 export async function sendEmails(recipients: string[], subject: string, text: string, pdfPath: string) {
-  const pdfContent = fs.readFileSync(path.resolve(__dirname, pdfPath));
+  const pdfContent = fs.readFileSync(path.resolve(pdfPath));
 
   for (const to of recipients) {
     const mailOptions = {
@@ -39,7 +39,3 @@ export async function sendEmails(recipients: string[], subject: string, text: st
     }
   }
 }
-
-// const recipients = ['lucapgomes11@gmail.com', 'lucapinheirog@gmail.com'];
-// const pdfPath = '../../../../cv_LucaGomes.pdf';
-// sendEmails(recipients, 'Teste', 'Olá, tudo bem?', pdfPath);
