@@ -31,11 +31,11 @@ export class GetAllEmailsByTeamController {
           (email) => new GetAllEmailsByTeamViewmodel(email)
         );
         res.status(200).json(emailsViewModel);
+      } else {
+        const emails = await this.usecase.execute(team);
+        const emailStrings = emails.map((email) => email.email);
+        res.status(200).json(emailStrings);
       }
-
-      const emails = await this.usecase.execute(team);
-      const emailStrings = emails.map((email) => email.email);
-      res.status(200).json(emailStrings);
     } catch (error: any) {
       if (error instanceof InvalidRequest) {
         return new BadRequest(error.message).send(res);
