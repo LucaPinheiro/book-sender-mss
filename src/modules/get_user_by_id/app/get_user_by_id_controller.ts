@@ -8,7 +8,9 @@ export class GetUserByIdController {
 
   async handle(req: Request, res: Response) {
     try {
-      const userId: string = req.params.userId;
+      const UserFromToken = req.user as UserFromToken;
+      const userId = UserFromToken.user_id
+      console.log("userId", userId)
 
       const user = await this.getUserByIdUsecase.execute(userId);
 
