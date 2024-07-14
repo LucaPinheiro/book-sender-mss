@@ -11,7 +11,7 @@ const getUserByIdUseCase = new getUserByIdUsecase(userRepository);
 const getUserByIdController = new GetUserByIdController(getUserByIdUseCase);
 
 router.get(
-  "/user-id/:userId",
+  "/user",
   authenticateToken,
   async (req: Request, res: Response) => {
     await getUserByIdController.handle(req, res);
