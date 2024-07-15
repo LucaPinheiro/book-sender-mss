@@ -14,7 +14,7 @@ export class SendEmailUsecase {
     const emails = await this.emailRepository.getAllEmailsByTeam(team);
     emailsBoss.push(...emails);
     try {
-      console.log("OLHA AQUI CACETE ", emailsBoss);
+      console.log("emails: ", emailsBoss);
       const emailList = emails.map((email) => email.email);
       await sendEmails(emailList, subject, text, pdfPath);
       return true;
