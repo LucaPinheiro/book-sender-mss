@@ -12,11 +12,14 @@ import {
   ParameterError,
 } from "../../../shared/helpers/http/http_codes";
 import { EntityError } from "../../../shared/helpers/errors/domain_errors";
-import { DuplicatedItem } from "../../../shared/helpers/errors/usecase_errors";
+import {
+  DuplicatedItem,
+  FailToSendEmail,
+} from "../../../shared/helpers/errors/usecase_errors";
 import { SendEmailViewModel } from "./send_email_viewmodel";
 import path from "path";
 import fs from "fs";
-import fsPromises from "fs/promises"; 
+import fsPromises from "fs/promises";
 
 export class SendEmailController {
   constructor(private usecase: SendEmailUsecase) {}
@@ -45,7 +48,7 @@ export class SendEmailController {
       // }
 
       const resolvedPdfPath = path.resolve(pdfPath);
-      
+
       const success = await this.usecase.execute(
         team,
         subject,
@@ -53,11 +56,11 @@ export class SendEmailController {
         resolvedPdfPath
       );
 
-      // if (success) {
-      //   const uploadDir = path.resolve('uploads'); 
-      //   await fsPromises.rm(uploadDir, { recursive: true, force: true });
-      //   console.log(`Pasta ${uploadDir} removida com sucesso!`);
-      // }
+      if (success) {
+        const uploadDir = path.resolve("uploads");
+        await fsPromises.rm(uploadDir, { recursive: true, force: true });
+        console.log(`Pasta ${uploadDir} removida com sucesso!`);
+      }
 
       const viewmodel = new SendEmailViewModel("E-mails enviados com sucesso!");
       return res.status(200).send(viewmodel);
@@ -67,6 +70,9 @@ export class SendEmailController {
       }
       if (error instanceof InvalidParameter) {
         return new ParameterError(error.message).send(res);
+      }
+      if (error instanceof FailToSendEmail) {
+        return new BadRequest(error.message).send(res);
       }
       if (error instanceof EntityError) {
         return new ParameterError(error.message).send(res);
