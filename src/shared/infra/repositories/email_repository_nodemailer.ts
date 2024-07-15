@@ -2,6 +2,7 @@ import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
 import fs from 'fs';
 import path from 'path';
+import { FailToSendEmail } from '../../helpers/errors/usecase_errors';
 
 dotenv.config();
 
@@ -34,7 +35,8 @@ export async function sendEmails(recipients: string[], subject: string, text: st
     try {
       const info = await transporter.sendMail(mailOptions);
       console.log(`E-mail enviado para ${to}: ${info.response}`);
-    } catch (error) {
+    } catch (error: any) {
+      throw new FailToSendEmail(`Erro ao enviar e-mail para ${to}: ${error}`);
       console.error(`Erro ao enviar e-mail para ${to}: ${error}`);
     }
   }
