@@ -12,11 +12,14 @@ import {
   ParameterError,
 } from "../../../shared/helpers/http/http_codes";
 import { EntityError } from "../../../shared/helpers/errors/domain_errors";
-import { DuplicatedItem } from "../../../shared/helpers/errors/usecase_errors";
+import {
+  DuplicatedItem,
+  FailToSendEmail,
+} from "../../../shared/helpers/errors/usecase_errors";
 import { SendEmailViewModel } from "./send_email_viewmodel";
 import path from "path";
 import fs from "fs";
-import fsPromises from "fs/promises"; 
+import fsPromises from "fs/promises";
 
 export class SendEmailController {
   constructor(private usecase: SendEmailUsecase) {}
@@ -24,14 +27,14 @@ export class SendEmailController {
   async handle(req: Request, res: Response) {
     try {
       const { subject, text } = req.body;
-      let { recipients } = req.body;
+      let { team } = req.body;
       const pdfPath = req.file?.path;
 
       if (!pdfPath) {
         throw new InvalidRequest("PDF file is required.");
       }
-      if (!recipients) {
-        throw new InvalidRequest("Recipients are required.");
+      if (!team) {
+        throw new InvalidRequest("Team are required.");
       }
       if (!subject) {
         throw new InvalidRequest("Subject is required.");
@@ -40,21 +43,21 @@ export class SendEmailController {
         throw new InvalidRequest("Text is required.");
       }
 
-      if (!Array.isArray(recipients)) {
-        recipients = [recipients];
-      }
+      // if (!Array.isArray(recipients)) {
+      //   recipients = [recipients];
+      // }
 
       const resolvedPdfPath = path.resolve(pdfPath);
 
       const success = await this.usecase.execute(
-        recipients,
+        team,
         subject,
         text,
         resolvedPdfPath
       );
 
       if (success) {
-        const uploadDir = path.resolve('uploads'); 
+        const uploadDir = path.resolve("uploads");
         await fsPromises.rm(uploadDir, { recursive: true, force: true });
         console.log(`Pasta ${uploadDir} removida com sucesso!`);
       }
@@ -67,6 +70,9 @@ export class SendEmailController {
       }
       if (error instanceof InvalidParameter) {
         return new ParameterError(error.message).send(res);
+      }
+      if (error instanceof FailToSendEmail) {
+        return new BadRequest(error.message).send(res);
       }
       if (error instanceof EntityError) {
         return new ParameterError(error.message).send(res);

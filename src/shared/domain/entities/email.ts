@@ -23,9 +23,9 @@ export class Email {
       throw new EntityError("Invalid team");
     }
 
-    if (!Email.isValidRole(props.role)) {
-      throw new EntityError("Invalid role");
-    }
+    // if (!Email.isValidRole(props.role)) {
+    //   throw new EntityError("Invalid role");
+    // }
   }
 
   get emailId(): string | undefined {

@@ -127,4 +127,32 @@ export class EmailRepositoryPrisma implements IEmailRepository {
       throw new Error("Erro ao deletar email no banco de dados.");
     }
   }
+
+  async getAllEmailsExceptTimeRole(): Promise<Email[]> {
+    try {
+      const emailsFromPrisma = await prisma.email.findMany({
+        where: {
+          role: {
+            not: ROLE.TIME,
+          },
+        },
+        orderBy: {
+          role: "asc",
+        }
+      });
+
+      const emails = emailsFromPrisma.map((email) => {
+        return new Email({
+          email: email.email,
+          team: email.team as TEAM,
+          role: email.role as ROLE,
+        });
+      });
+
+      return emails;
+    } catch (error: any) {
+      console.error("Erro ao buscar emails:", error);
+      throw new Error("Erro ao buscar emails no banco de dados.");
+    }
+  }
 }

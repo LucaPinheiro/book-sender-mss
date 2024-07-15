@@ -5,5 +5,6 @@ export interface IEmailRepository {
   getAllEmails(): Promise<Email[]>;
   getAllEmailsByTeam(team: string): Promise<Email[]>;
   getAllEmailsByRole(role: string): Promise<Email[]>;
+  getAllEmailsExceptTimeRole(): Promise<Email[]>;
   deleteEmail(email: string): Promise<void>;
 }
